@@ -2,7 +2,9 @@ package com.example.absencemanagerproject_mobile.data.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;  // Import the Index annotation
 import androidx.room.PrimaryKey;
+import androidx.room.Ignore; // Import the Ignore annotation
 
 import java.util.Date;
 
@@ -10,7 +12,8 @@ import java.util.Date;
         foreignKeys = @ForeignKey(entity = Student.class,
                 parentColumns = "studentId",
                 childColumns = "studentId",
-                onDelete = ForeignKey.CASCADE))
+                onDelete = ForeignKey.CASCADE),
+        indices = {@Index("studentId")})  // Add this line to create an index on studentId
 public class Absence {
     @PrimaryKey(autoGenerate = true)
     private int absenceId;
@@ -21,7 +24,12 @@ public class Absence {
     private String penalty;
     private String status; // e.g., "Pending", "Approved", "Rejected"
 
-    // Constructor
+    // Default no-argument constructor
+    public Absence() {
+    }
+
+    // Constructor with arguments
+    @Ignore  // Add this annotation to specify that Room should not use this constructor
     public Absence(int studentId, String subject, Date date, String justificationPath, String penalty, String status) {
         this.studentId = studentId;
         this.subject = subject;

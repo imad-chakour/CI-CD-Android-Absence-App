@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modify Absence"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student CNE:"
+        android:textSize="16sp"
+        android:textColor="#000" />
+    <EditText
+        android:id="@+id/modifyStudentCneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:enabled="false"  android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date (dd/MM/yyyy):"
+        android:textSize="16sp"
+        android:textColor="#000" />
+    <EditText
+        android:id="@+id/modifyDateEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:hint="dd/MM/yyyy"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Justification Path:"
+        android:textSize="16sp"
+        android:textColor="#000" />
+    <EditText
+        android:id="@+id/modifyJustificationEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Penalty:"
+        android:textSize="16sp"
+        android:textColor="#000" />
+    <EditText
+        android:id="@+id/modifyPenaltyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status:"
+        android:textSize="16sp"
+        android:textColor="#000" />
+    <EditText
+        android:id="@+id/modifyStatusEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/saveChangesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Changes"
+        android:textColor="#fff"
+        android:backgroundTint="#4CAF50"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

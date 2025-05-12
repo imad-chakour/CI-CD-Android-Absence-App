@@ -1,53 +1,55 @@
 package com.example.absencemanagerproject_mobile.ui.student;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.View; // Added import
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.absencemanagerproject_mobile.R;
 
+import java.io.File;
+
 public class JustifyAbsenceActivity extends AppCompatActivity {
 
-    private static final int PICK_FILE_REQUEST = 1;
+    private static final int REQUEST_FILE_PICK = 1;
+    private Button chooseFileButton;
     private TextView selectedFileTextView;
-    private Button uploadButton;
+    private Button uploadJustificationButton;
     private Uri fileUri;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_justify_absence);
 
+        chooseFileButton = findViewById(R.id.chooseFileButton);
         selectedFileTextView = findViewById(R.id.selectedFileTextView);
-        uploadButton = findViewById(R.id.uploadJustificationButton);
-        Button chooseFileButton = findViewById(R.id.chooseFileButton);
+        uploadJustificationButton = findViewById(R.id.uploadJustificationButton);
 
         chooseFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*"); // Allow all file types for simplicity, adjust as needed
-                startActivityForResult(intent, PICK_FILE_REQUEST);
+                openFilePicker();
             }
         });
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+        uploadJustificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fileUri != null) {
-                    // In a real application, you would handle the file upload here
-                    // This might involve storing the file path in the database
-                    // and potentially uploading the file to a server.
-                    // For this basic version, we'll just show a message.
-                    selectedFileTextView.setText("File Selected: " + fileUri.getLastPathSegment());
-                    Toast.makeText(JustifyAbsenceActivity.this, "Justification submitted (path: " + fileUri.toString() + ")", Toast.LENGTH_LONG).show();
-                    // You would likely want to update the absence status in the database here.
+                    // Pass the file path back to AddAbsenceActivity
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("filePath", filePath); // Use the filePath
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish(); // Close this activity
                 } else {
                     Toast.makeText(JustifyAbsenceActivity.this, "Please select a file", Toast.LENGTH_SHORT).show();
                 }
@@ -55,12 +57,37 @@ public class JustifyAbsenceActivity extends AppCompatActivity {
         });
     }
 
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*"); // Allow all file types.  Consider specifying types.
+        startActivityForResult(intent, REQUEST_FILE_PICK);
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+        if (requestCode == REQUEST_FILE_PICK && resultCode == RESULT_OK && data != null) {
             fileUri = data.getData();
-            selectedFileTextView.setText("Selected File: " + fileUri.getLastPathSegment());
+            if (fileUri != null) {
+                filePath = getFilePathFromUri(fileUri);  //Get file path
+                selectedFileTextView.setText("File selected: " + filePath);
+                uploadJustificationButton.setEnabled(true);
+            } else {
+                selectedFileTextView.setText("No file selected");
+                uploadJustificationButton.setEnabled(false);
+            }
+        } else if (requestCode == REQUEST_FILE_PICK && resultCode != RESULT_OK) {
+            selectedFileTextView.setText("File selection cancelled");
+            uploadJustificationButton.setEnabled(false);
         }
+    }
+
+    private String getFilePathFromUri(Uri uri) {
+        String filePath = null;
+        File file = new File(uri.getPath());
+        filePath = file.getAbsolutePath();
+
+        return filePath;
     }
 }

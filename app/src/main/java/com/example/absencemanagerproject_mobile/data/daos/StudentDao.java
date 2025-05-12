@@ -30,4 +30,7 @@ public interface StudentDao {
 
     @Query("SELECT * FROM students")
     LiveData<List<Student>> getAllStudents();
+
+    @Query("DELETE FROM students")
+    void deleteAllStudents();
 }
