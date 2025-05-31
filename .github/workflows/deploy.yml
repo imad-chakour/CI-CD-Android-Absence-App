@@ -30,9 +30,3 @@ jobs:
         run: ./gradlew assembleDebug appDistributionUploadDebug
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-      - name: Upload Debug APK artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/*.apk
