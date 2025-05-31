@@ -1,0 +1,49 @@
+name: Android Deploy
+
+on:
+  workflow_run:
+    workflows: ["Android CI"]
+    branches: [main]
+    types: [completed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write  # Needed for Firebase auth
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Configure Firebase Service Account
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo "$FIREBASE_SERVICE_ACCOUNT" > firebase-service-account.json
+          mkdir -p ~/.config/firebase
+          mv firebase-service-account.json ~/.config/firebase/
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Upload to Firebase App Distribution
+        run: ./gradlew appDistributionUploadRelease
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release/*.apk

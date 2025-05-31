@@ -1,0 +1,5 @@
+Version 1.0 Release
+
+- Initial release of absence management app
+- Basic CRUD operations implemented
+- Room database integration
