@@ -29,10 +29,9 @@ android {
         }
         debug {
             firebaseAppDistribution {
-                // Required: Specify testers or groups
+
                 testers="chakourimad01@gmail.com"
-                // OR use a group from Firebase Console
-                groups="qa-team"
+
             }
         }
     }

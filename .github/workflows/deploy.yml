@@ -27,19 +27,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Configure Firebase
-        env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > firebase-service-account.json
-          mkdir -p ~/.config/firebase
-          mv firebase-service-account.json ~/.config/firebase/
-
-      - name: Build and Deploy Release
-        run: ./gradlew assembleRelease appDistributionUploadRelease
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
       - name: Build and Deploy Debug
         run: ./gradlew assembleDebug appDistributionUploadDebug
         env:
