@@ -24,13 +24,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             firebaseAppDistribution {
                 releaseNotesFile="app/release-notes.txt"
-                testers="chakourimad01@gmail.com"
+                testers="chakourimad01@gmail.com, z.zadoine04@gmail.com"
             }
         }
         debug {
             firebaseAppDistribution {
 
-                testers="chakourimad01@gmail.com"
+                testers="chakourimad01@gmail.com, z.zadoine04@gmail.com"
 
             }
         }
